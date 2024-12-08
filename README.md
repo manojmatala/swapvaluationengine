@@ -13,7 +13,7 @@ The model out has three components:
 **[1] Federal Reserve, "_Historical Overnight SOFR Rate_", https://fred.stlouisfed.org/series/SOFR
 
 ** [2] US Treasury Yield curve
-U.S. Department of the Treasury, "Daily Treasury Yield Curve Rates," Accessed: Nov. 10, 2024. [Online]. Available: https://home.treasury.gov/resource-center/data-chart-center/interesrates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value=2024
+U.S. Department of the Treasury, "Daily Treasury Yield Curve Rates," https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202412
 
 
 ** [3] D. Heath, R. Jarrow, and A. Morton, "Bond Pricing and the Term Structure of Interest Rates: A New Methodology," Econometrica, vol. 60, no. 1, pp. 77–105, Jan. 1992. doi: 10.2307/2951677 
