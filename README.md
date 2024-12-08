@@ -2,6 +2,18 @@
 
 Inputs: The model leverages SOFR published from market The main challenge in using SOFR rate to forecast 
 
+Outputs:
+The model out has three components: 
+(i) Swap pricing (Fixed rate payer) 
+(ii) Swap valuation 
+(iii) Swaption pricing (MonteCarlo simulation) 
+
 
 ****References:
 **[1] Federal Reserve, "_Historical Overnight SOFR Rate_", https://fred.stlouisfed.org/series/SOFR
+
+** [2] US Treasury Yield curve
+U.S. Department of the Treasury, "Daily Treasury Yield Curve Rates," Accessed: Nov. 10, 2024. [Online]. Available: https://home.treasury.gov/resource-center/data-chart-center/interesrates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value=2024
+
+
+** [3] D. Heath, R. Jarrow, and A. Morton, "Bond Pricing and the Term Structure of Interest Rates: A New Methodology," Econometrica, vol. 60, no. 1, pp. 77–105, Jan. 1992. doi: 10.2307/2951677 
