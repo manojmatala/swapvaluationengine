@@ -1,40 +1,54 @@
-//This a test program to perform montecarlo simulations using the HJM model
-
-
-#include <iostream>
 #include <vector>
-#include <cmath>
 #include <random>
-#include <chrono> // For seeding with current time
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <cmath>
+using namespace std;
 
-int main() {
-    // Model parameters
-    double sofr_today = 4.81;      // Initial SOFR today
-    double volatility = 0.002;     // Constant volatility, 0.2% annualized
-    double delta_t = 0.25;         // Quarterly interval (in years)
-    int steps = 4;                 // Number of quarterly steps (1 year)
-
-    // Seed random number generator with current time
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+std::vector<std::vector<double>> generate_sofr_simulations(
+    double sofr_today, double volatility, double delta_t, int steps, int num_of_simulations, unsigned seed) {
     std::default_random_engine generator(seed);
     std::normal_distribution<double> distribution(0.0, 1.0);
+    std::vector<std::vector<double>> sofr_simulations;
 
-    // Store simulated forward rates
-    std::vector<double> sofr_curve = {sofr_today};
+    for (int sim = 1; sim <= num_of_simulations; ++sim) {
+        std::vector<double> sofr_curve_this_simulation{sofr_today};
+        double forward_rate = sofr_today;
 
-    // HJM simulation over each quarter
-    double forward_rate = sofr_today;
-    for (int i = 1; i <= steps; ++i) {
-        double Z = distribution(generator); // Random normal variable
-        double drift = 0.5 * volatility * volatility * (steps - i + 1) * delta_t; // Simplified drift term
-        forward_rate += drift * delta_t + volatility * sqrt(delta_t) * Z;
-        sofr_curve.push_back(forward_rate);
+        for (int i = 1; i <= steps; ++i) {
+            double Z = distribution(generator);
+            double drift = 0.5 * volatility * volatility * (steps - i + 1) * delta_t;
+            forward_rate += drift * delta_t + volatility * sqrt(delta_t) * Z;
+            sofr_curve_this_simulation.push_back(forward_rate);
+        }
+        sofr_simulations.push_back(sofr_curve_this_simulation);
     }
 
-    // Print the simulated forward SOFR curve
-    for (int i = 0; i < sofr_curve.size(); ++i) {
-        std::cout << "SOFR at " << i * 3 << " months: " << sofr_curve[i] << "%" << std::endl;
-    }
-
-    return 0;
+    return sofr_simulations;
 }
+
+void write_sofr_to_csv(const std::vector<std::vector<double>>& sofr_simulations, const std::string& filename) {
+    std::ofstream writefile(filename);
+    if (!writefile.is_open()) {
+        throw std::runtime_error(" Could not open the file for writing!");
+    }
+
+    writefile << std::fixed << std::setprecision(4);
+
+    for (int i = 0; i < sofr_simulations.size(); ++i) {
+        writefile << "Simulation " << i + 1 << ":,";
+        std::cout << "Simulation " << i + 1 << ":,";
+        for (const auto& rate : sofr_simulations[i]) {
+            writefile << rate << ",";
+            std::cout << rate << ",";
+            
+        }
+        writefile << "\n";
+        std::cout << "\n";
+    }
+
+    writefile.close();
+}
+
+
